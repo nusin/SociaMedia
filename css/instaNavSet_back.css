@@ -178,7 +178,7 @@ section {
 }
 
 .cmt {
-    background: url("img/chat.png") no-repeat;
+    background: url("./img/chat.png") no-repeat;
     background-size: 24px;
 }
 
