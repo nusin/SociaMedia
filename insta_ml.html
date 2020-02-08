@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>small project</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="css/instaNavSet_back.css">
+    </head>
+    <body>
+        <div class="wrap">
+        <!-- 상단 -->
+        <header class="w3-container">
+            <!-- 내비게이션 -->
+            <nav class="center bar"> 
+                <!-- 중앙 로고 -->
+                <div class="w3-display-container w3-mobile bar">
+                    <div id="logo" class="w3-display-middle">
+                        <a href="instaHeartOk.html">
+                            <h1>Social Media</h1>
+                        </a>
+                    </div>
+                </div>
+                <!-- 우측 아이콘 3개 -->
+                <div id="icons" class="w3-display-container w3-mobile bar">
+                    <div id="menu" class="w3-display-bottommiddle">
+                        <!-- 연결하고자 하는 기능 페이지 & 아이콘 -->
+                        <a href="instaHeartOk.html">
+                            user
+                        </a>
+                        <a href="insta_quiz.html">
+                            personality quiz
+                        </a>
+                        <a href="insta_ml.html">
+                            webcam
+                       </a>
+                       
+                    </div>
+                </div>
+            </nav>                
+        </header>
+        <!-- 메인 내용 -->
+            <section class="w3-row">
+                <div class="center">
+                <!-- 콘텐츠 영역 -->
+                    <div class="umg w3-rest w3-mobile">
+                        <!-- 게시글 (하단 영역 복사해서 입력) -->
+                        <div class="post w3-border w3-white" style="text-align: center;">
+                            <!-- 프로필 영역 -->
+                            <div class="w3-margin">
+                                <!-- 유저 프로필 사진-->
+                                <img class="user-face w3-left w3-circle" src="img/profile.jpg" alt="profile">
+                                <!-- 유저 아이디 -->
+                                <a href="instaHeartOk.html">
+                                    <div class="h32 w3-display-container">
+                                        <div class="l40 w3-display-left user-id">suns</div></a>
+                                </div>
+                            </div>
+                            <!-- 머신러닝 영역 -->
+                            <!-- 제목 -->
+                            <div class="w3-container insta-bg">
+                                <h3><b>나만의 머신러닝</b> &nbsp;<i class="fa fa-hand-peace-o"></i></h3>
+                            </div>
+                            <!-- 내용 -->
+                            <div class="fit w3-container w3-padding">
+                                <div class="w3-container w3-card umg w3-border w3-padding w3-light-grey">
+                                    <p>
+                                        이 프로그램은 <a href="https://teachablemachine.withgoogle.com/">Teachable Machine</a>으로<br> 주먹과 보자기의 사진을 학습시킨 결과물입니다.
+                                    </p>
+                                    <p>
+                                        학습된 데이터를 통해 <b>딥러닝 모델</b>이 만들어지며,<br> 이 모델은 카메라 이미지를 바탕으로<br> 주먹과 보자기 중<br> 무엇과 더 유사한지 확률을 계산합니다.
+                                    </p>
+                                    <p>
+                                        각 항목 옆에 표시되는 <b>% 수치</b>는<br> 머신이 판별한 <b>상대적 유사도</b>로,<br> 한 쪽이 <b>95% 이상 유사도</b>를 보였을 때<br> 해당 항목에 대한 자세한 설명이 나옵니다.
+                                    </p>
+                                </div> 
+                                <div class="w3-container w3-card umg w3-border w3-padding w3-light-grey">
+                                    <h2 style="text-align: center;"><b>Question <i class="fa fa-question-circle"></i></b></h2>
+                                    <p>
+                                        
+                                        우리는 주먹과 보자기의 차이를 알지만<br> 과연 컴퓨터도 그 차이를 알까?<br>
+                                        그래서 내가 컴퓨터에게 가르쳐줬어!<br> 주먹과 보자기를 보여줘봐!
+                                    </p>
+                                </div> 
+                                <div class="w3-container w3-card umg w3-border w3-padding w3-light-grey">
+                                    <h2><b>Machine Learning <img src="img/machine-learning.png"></b></h2>
+                                    <div class="w3-container w3-card umg w3-border w3-padding w3-light-grey">
+                                        
+                                        
+                                        <div><p>Start를 눌러 시작해주세요</p></div>
+                                        <button type="button" onclick="init()">Start</button>
+                                        <div id="webcam-container"></div>
+                                        <div id="label-container"></div>
+                                        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+                                        <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+                                        <script type="text/javascript">
+                                            // More API functions here:
+                                            // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
+                                        
+                                            // the link to your model provided by Teachable Machine export panel
+                                            const URL = "https://teachablemachine.withgoogle.com/models/fe9YhJI5/";
+                                        
+                                            let model, webcam, labelContainer, maxPredictions;
+                                        
+                                            // Load the image model and setup the webcam
+                                            async function init() {
+                                                const modelURL = URL + "model.json";
+                                                const metadataURL = URL + "metadata.json";
+                                        
+                                                // load the model and metadata
+                                                // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
+                                                // or files from your local hard drive
+                                                // Note: the pose library adds "tmImage" object to your window (window.tmImage)
+                                                model = await tmImage.load(modelURL, metadataURL);
+                                                maxPredictions = model.getTotalClasses();
+                                        
+                                                // Convenience function to setup a webcam
+                                                const flip = true; // whether to flip the webcam
+                                                webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
+                                                await webcam.setup(); // request access to the webcam
+                                                await webcam.play();
+                                                window.requestAnimationFrame(loop);
+                                        
+                                                // append elements to the DOM
+                                                document.getElementById("webcam-container").appendChild(webcam.canvas);
+                                                labelContainer = document.getElementById("label-container");
+                                                for (let i = 0; i < maxPredictions; i++) { // and class labels
+                                                    labelContainer.appendChild(document.createElement("div"));
+                                                }
+                                            }
+                                        
+                                            async function loop() {
+                                                webcam.update(); // update the webcam frame
+                                                await predict();
+                                                window.requestAnimationFrame(loop);
+                                            }
+                                        
+                                            // run the webcam image through the image model
+                                            async function predict() {
+                                                // predict can take in an image, video or canvas html element
+                                                const prediction = await model.predict(webcam.canvas);
+                                                for (let i = 0; i < maxPredictions; i++) {
+                                                    const classPrediction =
+                                                        prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+                                                    labelContainer.childNodes[i].innerHTML = classPrediction;
+                                                }
+                                            }
+                                        </script>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- copyright 및 이메일 기입 영역 -->
+            <footer class="bar">
+                <div class="footer">
+                    <b>&copy;copyright INS</b><br>
+                    encore@encore.com<br>
+                    <a href="http://www.freepik.com">Designed by Freepik</a>
+                </div>
+            </footer>
+        </div>
+    </body>
+</html>
+
